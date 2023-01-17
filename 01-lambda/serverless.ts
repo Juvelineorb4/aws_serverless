@@ -1,8 +1,12 @@
 import type { AWS } from '@serverless/typescript';
+
 import prueba from '@functions/prueba';
+import send from '@functions/send';
+
 const serverlessConfiguration: AWS = {
-    service: "cursosdev-01-lambda",
+    service: "cursos-01-lambda",
     frameworkVersion: "3",
+    plugins: ["serverless-esbuild"],
     provider: {
         name: "aws",
         runtime: "nodejs14.x",
@@ -16,7 +20,8 @@ const serverlessConfiguration: AWS = {
         },
     },
     functions: {
-        prueba
+        prueba,
+        send
     },
     package: { individually: true },
     custom: {
