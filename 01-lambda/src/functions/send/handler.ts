@@ -1,7 +1,7 @@
 const sendHandler = async (event: any = {}): Promise<any> => {
     return {
         statusCode: "200",
-        body: "enviado"
+        body: "enviando"
     }
 }
 export { sendHandler }
