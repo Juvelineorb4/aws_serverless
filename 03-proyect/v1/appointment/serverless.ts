@@ -1,9 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 
-import send from '@functions/send';
+import coreSend from '@functions/coreSend';
 
 const serverlessConfiguration: AWS = {
-  service: 'cursosdev-origin', //nombre de api gateway
+  service: 'cursosdev-appointment',
   frameworkVersion: '3',
   plugins: ['serverless-esbuild'],
   provider: {
@@ -17,18 +17,23 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
+    //agg rol para comunacion entre lambda
     iam: {
       role: {
         statements: [{
           Effect: "Allow",
           Action: ["lambda:InvokeFunction"],
-          Resource: ["arn:aws:lambda:*:*:function:cursosdev-destination-dev-receive"],
+          Resource: [
+            "arn:aws:lambda:*:*:function:cursosdev-appointment-CO-dev-processor",
+            "arn:aws:lambda:*:*:function:cursosdev-appointment-MX-dev-processor",
+            "arn:aws:lambda:*:*:function:cursosdev-appointment-PE-dev-processor",
+          ],
         },],
       }
     }
   },
   // import the function via paths
-  functions: { send },
+  functions: { coreSend },
   package: { individually: true },
   custom: {
     esbuild: {
